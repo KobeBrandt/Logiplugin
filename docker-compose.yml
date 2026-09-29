@@ -1,0 +1,33 @@
+services:
+  php-web:
+    build: docker
+    ports:
+      - "8080:80"
+    volumes:
+      - ".:/var/www"
+      - "./docker/php.ini:/usr/local/etc/php/php.ini"
+    depends_on:
+      - mysqldb
+  mysqldb:
+    image: mysql:8.4
+    restart: always
+    ports:
+      - "3307:3306"
+    volumes:
+      - "./docker/mysql-data:/var/lib/mysql"
+    environment:
+      - MYSQL_DATABASE=blogdb
+      - MYSQL_ROOT_PASSWORD=qwerty
+      - LANG=C.UTF-8
+  myadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8000:80"
+    environment:
+      - PMA_ARBITRARY=0
+      - PMA_HOST=mysqldb
+      - UPLOAD_LIMIT=50M
+    restart: always
+    depends_on:
+      - mysqldb

@@ -1,0 +1,9 @@
+# Caddy obtains and renews Let's Encrypt certificates for these domains automatically.
+logiplugin.com {
+	encode zstd gzip
+	reverse_proxy app:80
+}
+
+www.logiplugin.com {
+	redir https://logiplugin.com{uri} permanent
+}

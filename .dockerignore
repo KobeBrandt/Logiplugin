@@ -1,0 +1,14 @@
+.git
+.idea
+.env
+.env.*
+vendor
+node_modules
+tests
+docker/mysql-data
+.phpunit.result.cache
+bootstrap/cache/*.php
+storage/logs/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*

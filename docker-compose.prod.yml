@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/prod/Dockerfile
+    restart: unless-stopped
+    env_file: .env.production
+    # Not published on the host; only reachable through Caddy
+    expose:
+      - "80"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - "./docker/prod/Caddyfile:/etc/caddy/Caddyfile:ro"
+      - "caddy-data:/data"
+      - "caddy-config:/config"
+    depends_on:
+      - app
+
+volumes:
+  # Holds the TLS certificates; keep it so certificates survive redeploys
+  caddy-data:
+  caddy-config:
